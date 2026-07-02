@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Приглашение на свидание 💕</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        /* ========== RESET & BASE ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #fce4ec;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        /* ========== PAGES CONTAINER ========== */
+        .pages {
+            position: relative;
+            width: 100%;
+            max-width: 460px;
+            height: 100vh;
+            max-height: 820px;
+            overflow: hidden;
+            background: linear-gradient(145deg, #fff0f5 0%, #ffe4ec 30%, #ffd9e5 70%, #ffb6c9 100%);
+            border-radius: 28px;
+            box-shadow: 0 20px 60px rgba(255, 20, 100, 0.25);
+            margin: 12px;
+            transition: box-shadow 0.3s;
+        }
+
+        /* ========== PAGE ========== */
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 24px 36px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.7s ease, transform 0.7s ease;
+            transform: scale(0.96);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .page.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: scale(1);
+        }
+
+        .page::-webkit-scrollbar {
+            width: 3px;
+        }
+        .page::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .page::-webkit-scrollbar-thumb {
+            background: #ff8aac;
+            border-radius: 10px;
+        }
+
+        /* ========== PAGE 1 ========== */
+        #page1 {
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .kitten-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 4px;
+            animation: floatKitten 3s ease-in-out infinite;
+        }
+
+        .kitten-emoji {
+            font-size: 120px;
+            line-height: 1;
+            filter: drop-shadow(0 8px 24px rgba(255, 20, 100, 0.25));
+            transition: transform 0.3s;
+            user-select: none;
+        }
+
+        .heart-float {
+            position: absolute;
+            font-size: 48px;
+            top: -8px;
+            right: -12px;
+            animation: heartPulse 1.8s ease-in-out infinite;
+            filter: drop-shadow(0 4px 12px rgba(255, 0, 80, 0.3));
+            user-select: none;
+        }
+
+        .heart-float:nth-child(2) {
+            font-size: 32px;
+            top: 20px;
+            right: -36px;
+            animation-delay: 0.6s;
+        }
+
+        .title-text {
+            font-family: 'Pacifico', cursive;
+            font-size: clamp(26px, 7.5vw, 38px);
+            color: #b3416b;
+            text-align: center;
+            line-height: 1.3;
+            margin: 8px 0 12px;
+            text-shadow: 0 2px 16px rgba(255, 150, 200, 0.3);
+            letter-spacing: 0.5px;
+            padding: 0 6px;
+        }
+
+        .title-text span {
+            display: inline-block;
+            animation: textGlow 2.5s ease-in-out infinite;
+        }
+
+        /* ========== BUTTONS ========== */
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 18px 24px;
+            margin-top: 10px;
+            width: 100%;
+            max-width: 340px;
+            position: relative;
+        }
+
+        .btn-yes {
+            position: relative;
+            background: linear-gradient(135deg, #ff4d7a, #e8326b);
+            border: none;
+            border-radius: 60px 60px 60px 12px;
+            padding: 16px 38px 16px 34px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: clamp(20px, 5.5vw, 28px);
+            font-weight: 700;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 8px 28px rgba(232, 50, 107, 0.45);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 0.5px;
+            touch-action: manipulation;
+            user-select: none;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .btn-yes::before {
+            content: "❤️";
+            font-size: clamp(24px, 6vw, 32px);
+            line-height: 1;
+            animation: heartPulse 1.4s ease-in-out infinite;
+        }
+
+        .btn-yes:active {
+            transform: scale(0.94);
+            box-shadow: 0 4px 16px rgba(232, 50, 107, 0.35);
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 36px rgba(232, 50, 107, 0.55);
+        }
+
+        /* ----- "Не знаю" button ----- */
+        .btn-no {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 2px solid #ff8aac;
+            border-radius: 40px;
+            padding: 12px 28px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: clamp(15px, 4vw, 20px);
+            font-weight: 600;
+            color: #b3416b;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(255, 100, 150, 0.15);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            touch-action: manipulation;
+            user-select: none;
+            min-width: 80px;
+            text-align: center;
+            letter-spacing: 0.3px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-no:active {
+            transform: scale(0.92);
+        }
+
+        .btn-no.hidden-btn {
+            opacity: 0;
+            transform: scale(0) translateY(40px);
+            pointer-events: none;
+            width: 0;
+            padding: 0 0;
+            margin: 0;
+            min-width: 0;
+            border-width: 0;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.34, 1.0, 0.64, 1);
+        }
+
+        .btn-no.shrink {
+            transform: scale(0.6) translateX(40px);
+            opacity: 0.6;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* ========== PAGE 2 ========== */
+        #page2 {
+            justify-content: center;
+            gap: 6px;
+            padding-top: 20px;
+            padding-bottom: 30px;
+        }
+
+        /* Kiss rain */
+        .kiss-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .kiss-emoji {
+            position: absolute;
+            font-size: 32px;
+            opacity: 0;
+            animation: kissFloat 5s ease-in forwards;
+            user-select: none;
+            filter: drop-shadow(0 4px 12px rgba(255, 50, 100, 0.2));
+        }
+
+        .bunny-wrapper {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2px;
+        }
+
+        .bunny-emoji {
+            font-size: 100px;
+            line-height: 1;
+            filter: drop-shadow(0 8px 24px rgba(255, 20, 100, 0.2));
+            animation: floatBunny 3.2s ease-in-out infinite;
+            user-select: none;
+        }
+
+        .bunny-text {
+            font-family: 'Pacifico', cursive;
+            font-size: clamp(22px, 6vw, 32px);
+            color: #b3416b;
+            text-align: center;
+            line-height: 1.3;
+            margin: 4px 0 8px;
+            text-shadow: 0 2px 16px rgba(255, 150, 200, 0.25);
+            max-width: 90%;
+            z-index: 1;
+            padding: 0 4px;
+        }
+
+        /* ----- Date picker button ----- */
+        .btn-date {
+            background: linear-gradient(135deg, #ff6b8a, #e8436b);
+            border: none;
+            border-radius: 50px;
+            padding: 14px 30px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: clamp(16px, 4.2vw, 22px);
+            font-weight: 700;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 6px 24px rgba(232, 67, 107, 0.4);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            touch-action: manipulation;
+            user-select: none;
+            z-index: 1;
+            text-align: center;
+            letter-spacing: 0.3px;
+            margin-top: 6px;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .btn-date:active {
+            transform: scale(0.95);
+            box-shadow: 0 3px 14px rgba(232, 67, 107, 0.3);
+        }
+
+        .btn-date:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 32px rgba(232, 67, 107, 0.5);
+        }
+
+        /* ----- Form (hidden by default) ----- */
+        .date-form {
+            width: 100%;
+            max-width: 320px;
+            margin-top: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            opacity: 0;
+            transform: translateY(20px) scale(0.96);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+            z-index: 1;
+            padding: 0 4px;
+        }
+
+        .date-form.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .date-form label {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            color: #a03a5e;
+            letter-spacing: 0.3px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .date-form input[type="date"] {
+            padding: 12px 16px;
+            border: 2px solid #ffb0c8;
+            border-radius: 20px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            color: #4a2a3a;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            width: 100%;
+            touch-action: manipulation;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .date-form input[type="date"]:focus {
+            border-color: #ff4d7a;
+            box-shadow: 0 0 0 4px rgba(255, 77, 122, 0.15);
+        }
+
+        .date-form textarea {
+            padding: 14px 16px;
+            border: 2px solid #ffb0c8;
+            border-radius: 20px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            color: #4a2a3a;
+            outline: none;
+            resize: vertical;
+            min-height: 90px;
+            max-height: 160px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            width: 100%;
+            touch-action: manipulation;
+        }
+
+        .date-form textarea:focus {
+            border-color: #ff4d7a;
+            box-shadow: 0 0 0 4px rgba(255, 77, 122, 0.15);
+        }
+
+        .date-form textarea::placeholder {
+            color: #b0889a;
+            font-style: italic;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #ff4d7a, #d6336b);
+            border: none;
+            border-radius: 50px;
+            padding: 14px 20px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 6px 24px rgba(214, 51, 107, 0.35);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            touch-action: manipulation;
+            user-select: none;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.95);
+            box-shadow: 0 3px 14px rgba(214, 51, 107, 0.25);
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 32px rgba(214, 51, 107, 0.45);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            transform: none !important;
+            cursor: not-allowed;
+        }
+
+        /* ========== SUCCESS MESSAGE ========== */
+        .success-message {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            text-align: center;
+            padding: 20px 16px;
+            margin-top: 12px;
+            z-index: 2;
+            width: 100%;
+            max-width: 340px;
+            animation: successPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .success-message.show {
+            display: flex;
+        }
+
+        .success-message .big-heart {
+            font-size: 64px;
+            animation: heartPulse 1.2s ease-in-out infinite;
+            user-select: none;
+        }
+
+        .success-message h2 {
+            font-family: 'Pacifico', cursive;
+            font-size: clamp(24px, 6vw, 32px);
+            color: #a03a5e;
+            line-height: 1.2;
+        }
+
+        .success-message p {
+            font-size: 16px;
+            color: #7a3a54;
+            line-height: 1.5;
+            max-width: 90%;
+            font-weight: 500;
+        }
+
+        .success-message .sparkles {
+            font-size: 28px;
+            letter-spacing: 6px;
+            animation: sparkleRotate 3s linear infinite;
+            user-select: none;
+        }
+
+        /* ========== ANIMATIONS ========== */
+        @keyframes floatKitten {
+            0%,
+            100% {
+                transform: translateY(0) rotate(-2deg);
+            }
+            50% {
+                transform: translateY(-12px) rotate(2deg);
+            }
+        }
+
+        @keyframes floatBunny {
+            0%,
+            100% {
+                transform: translateY(0) rotate(1deg);
+            }
+            50% {
+                transform: translateY(-10px) rotate(-1deg);
+            }
+        }
+
+        @keyframes heartPulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.25);
+            }
+        }
+
+        @keyframes textGlow {
+            0%,
+            100% {
+                text-shadow: 0 2px 16px rgba(255, 150, 200, 0.2);
+            }
+            50% {
+                text-shadow: 0 2px 32px rgba(255, 80, 150, 0.45);
+            }
+        }
+
+        @keyframes kissFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.4) rotate(0deg);
+            }
+            15% {
+                opacity: 1;
+                transform: translateY(0px) scale(1) rotate(6deg);
+            }
+            85% {
+                opacity: 1;
+                transform: translateY(-240px) scale(1.1) rotate(-6deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-320px) scale(0.6) rotate(10deg);
+            }
+        }
+
+        @keyframes successPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.7) translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes sparkleRotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ========== CONFETTI HEARTS (success) ========== */
+        .confetti-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .confetti-heart {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0;
+            animation: confettiFall 3.5s ease-in forwards;
+            user-select: none;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px) rotate(0deg) scale(0.3);
+            }
+            15% {
+                opacity: 1;
+                transform: translateY(10px) rotate(20deg) scale(1);
+            }
+            85% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(400px) rotate(360deg) scale(0.5);
+            }
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 420px) {
+            .pages {
+                border-radius: 0;
+                margin: 0;
+                max-height: 100vh;
+                height: 100vh;
+                max-width: 100%;
+            }
+            .page {
+                padding: 20px 16px 28px;
+            }
+            .kitten-emoji {
+                font-size: 90px;
+            }
+            .bunny-emoji {
+                font-size: 80px;
+            }
+            .btn-yes {
+                padding: 14px 28px 14px 24px;
+                min-width: 100px;
+            }
+            .btn-no {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            .btn-date {
+                padding: 12px 20px;
+                font-size: 15px;
+            }
+            .heart-float {
+                font-size: 36px;
+                right: -4px;
+            }
+            .heart-float:nth-child(2) {
+                font-size: 24px;
+                right: -24px;
+            }
+            .date-form {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .kitten-emoji {
+                font-size: 70px;
+            }
+            .bunny-emoji {
+                font-size: 64px;
+            }
+            .title-text {
+                font-size: 22px;
+            }
+            .btn-yes {
+                font-size: 18px;
+                padding: 12px 20px 12px 18px;
+                min-width: 80px;
+            }
+            .btn-yes::before {
+                font-size: 20px;
+            }
+            .btn-no {
+                font-size: 13px;
+                padding: 8px 16px;
+            }
+            .btn-group {
+                gap: 12px;
+            }
+        }
+
+        @media (min-height: 800px) {
+            .page {
+                padding-top: 40px;
+                padding-bottom: 40px;
+            }
+            .kitten-emoji {
+                font-size: 140px;
+            }
+            .bunny-emoji {
+                font-size: 116px;
+            }
+            .title-text {
+                font-size: 38px;
+            }
+        }
+
+        /* fix for notch phones */
+        @supports (padding-top: env(safe-area-inset-top)) {
+            .page {
+                padding-top: calc(28px + env(safe-area-inset-top));
+                padding-bottom: calc(28px + env(safe-area-inset-bottom));
+            }
+        }
+
+        /* Loading / sending state */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ========== UTILITY ========== */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-1 {
+            margin-top: 8px;
+        }
+        .mt-2 {
+            margin-top: 16px;
+        }
+        .mb-1 {
+            margin-bottom: 8px;
+        }
+
+        .relative {
+            position: relative;
+        }
+        .z-1 {
+            z-index: 1;
+        }
+        .z-2 {
+            z-index: 2;
+        }
+        .w-full {
+            width: 100%;
+        }
+
+        /* fix for iOS input styling */
+        input,
+        textarea,
+        button {
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        /* Scrollable content on page 2 */
+        #page2 .scroll-content {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            overflow-y: auto;
+            padding: 4px 0;
+            -webkit-overflow-scrolling: touch;
+            z-index: 1;
+        }
+
+        #page2 .scroll-content::-webkit-scrollbar {
+            width: 2px;
+        }
+        #page2 .scroll-content::-webkit-scrollbar-thumb {
+            background: #ff8aac;
+            border-radius: 10px;
+        }
+
+        /* Form group spacing */
+        .form-group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            color: #7a3a54;
+            font-weight: 600;
+            padding-left: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="pages" id="app">
+
+        <!-- ==================== PAGE 1 ==================== -->
+        <div id="page1" class="page active">
+            <!-- Kitten with hearts -->
+            <div class="kitten-wrapper">
+                <span class="kitten-emoji">🐱</span>
+                <span class="heart-float">❤️</span>
+                <span class="heart-float">💖</span>
+            </div>
+
+            <h1 class="title-text">
+                <span>Ты пойдёшь со мной</span><br />
+                <span>на свидание?</span>
+            </h1>
+
+            <div class="btn-group">
+                <button class="btn-yes" id="btnYes">Да!</button>
+                <button class="btn-no" id="btnNo">Не знаю</button>
+            </div>
+
+            <div style="height:12px;"></div>
+        </div>
+
+        <!-- ==================== PAGE 2 ==================== -->
+        <div id="page2" class="page">
+            <!-- Kiss rain container -->
+            <div class="kiss-container" id="kissContainer"></div>
+
+            <div class="scroll-content">
+                <!-- Bunny -->
+                <div class="bunny-wrapper">
+                    <span class="bunny-emoji">🐰</span>
+                </div>
+
+                <p class="bunny-text">
+                    когда ты будешь свободна<br />для нашего свидания?
+                </p>
+
+                <!-- Date picker button -->
+                <button class="btn-date" id="btnDate">
+                    📅 Выбери дату! И напиши когда тебе будет угодно
+                </button>
+
+                <!-- Form -->
+                <div class="date-form" id="dateForm">
+                    <div class="form-group">
+                        <label for="datePicker">📆 Выбери день:</label>
+                        <input type="date" id="datePicker" min="2026-07-03" />
+                    </div>
+                    <div class="form-group">
+                        <label for="commentField">💌 Твой комментарий:</label>
+                        <textarea id="commentField" placeholder="Напиши что-нибудь милое… или просто время и место 😊"></textarea>
+                    </div>
+                    <button class="btn-submit" id="btnSubmit">💕 Отправить!</button>
+                </div>
+
+                <!-- Success message -->
+                <div class="success-message" id="successMessage">
+                    <div class="big-heart">💖</div>
+                    <h2>Ура! Свидание назначено! 🥳</h2>
+                    <p>
+                        Я уже предвкушаю нашу встречу!<br />
+                        Ты — самая замечательная, и я очень<br />
+                        рад, что мы проведём время вместе ✨
+                    </p>
+                    <div class="sparkles">✨ 💕 ✨</div>
+                    <p style="font-size:15px; color:#a03a5e; margin-top:4px;">
+                        <small>Я получил твой ответ! ❤️</small>
+                    </p>
+                </div>
+
+                <!-- Confetti hearts container -->
+                <div class="confetti-hearts" id="confettiContainer"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // ============================================================
+        // DOM refs
+        // ============================================================
+        const page1 = document.getElementById('page1');
+        const page2 = document.getElementById('page2');
+        const btnYes = document.getElementById('btnYes');
+        const btnNo = document.getElementById('btnNo');
+        const btnDate = document.getElementById('btnDate');
+        const dateForm = document.getElementById('dateForm');
+        const datePicker = document.getElementById('datePicker');
+        const commentField = document.getElementById('commentField');
+        const btnSubmit = document.getElementById('btnSubmit');
+        const successMessage = document.getElementById('successMessage');
+        const kissContainer = document.getElementById('kissContainer');
+        const confettiContainer = document.getElementById('confettiContainer');
+
+        let noClickCount = 0;
+        let kissInterval = null;
+        let confettiInterval = null;
+
+        // ============================================================
+        // Page transition
+        // ============================================================
+        function goToPage2() {
+            page1.classList.remove('active');
+            page2.classList.add('active');
+            startKissRain();
+            // Set default date to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            datePicker.value = tomorrow.toISOString().split('T')[0];
+        }
+
+        // ============================================================
+        // "Да!" button
+        // ============================================================
+        btnYes.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Haptic feedback simulation
+            if (navigator.vibrate) navigator.vibrate(12);
+            goToPage2();
+        });
+
+        // ============================================================
+        // "Не знаю" button — shrink & move → disappear
+        // ============================================================
+        btnNo.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (navigator.vibrate) navigator.vibrate(6);
+
+            noClickCount++;
+
+            if (noClickCount === 1) {
+                // shrink and move
+                btnNo.classList.add('shrink');
+                // move to random position within btn-group
+                const group = btnNo.parentElement;
+                const rect = group.getBoundingClientRect();
+                const maxX = rect.width - 100;
+                const maxY = rect.height - 50;
+                const randX = Math.random() * maxX - 20;
+                const randY = Math.random() * maxY - 20;
+                btnNo.style.transform = `scale(0.6) translate(${randX}px, ${randY}px)`;
+                btnNo.style.opacity = '0.6';
+                btnNo.textContent = '😅 ну…';
+            } else if (noClickCount === 2) {
+                // disappear
+                btnNo.classList.add('hidden-btn');
+                btnNo.style.transform = 'scale(0) translateY(40px)';
+                btnNo.style.opacity = '0';
+                btnNo.style.pointerEvents = 'none';
+                btnNo.textContent = '😅';
+                // Show a little playful reaction
+                setTimeout(() => {
+                    btnNo.textContent = '💕';
+                    btnNo.style.opacity = '0.2';
+                }, 300);
+            } else {
+                // already hidden, do nothing
+            }
+        });
+
+        // ============================================================
+        // Show date form
+        // ============================================================
+        btnDate.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (navigator.vibrate) navigator.vibrate(10);
+            dateForm.classList.toggle('show');
+            if (dateForm.classList.contains('show')) {
+                btnDate.textContent = '📅 Скрыть форму';
+                // focus on date picker after a small delay
+                setTimeout(() => datePicker.focus(), 400);
+            } else {
+                btnDate.textContent = '📅 Выбери дату! И напиши когда тебе будет угодно';
+            }
+        });
+
+        // ============================================================
+        // Submit form → send to email (via Python backend)
+        // ============================================================
+        btnSubmit.addEventListener('click', async function(e) {
+            e.preventDefault();
+            if (navigator.vibrate) navigator.vibrate(15);
+
+            const date = datePicker.value;
+            const comment = commentField.value.trim();
+
+            if (!date) {
+                alert('💕 Пожалуйста, выбери дату!');
+                datePicker.focus();
+                return;
+            }
+
+            // Disable button and show loading
+            btnSubmit.disabled = true;
+            const originalText = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = '<span class="spinner"></span> Отправляю...';
+
+            // Prepare data
+            const payload = {
+                date: date,
+                comment: comment || '❤️ (без комментария, но с любовью)'
+            };
+
+            try {
+                // ======================================================
+                // 🔁 ЗАМЕНИ URL НА СВОЙ БЭКЕНД
+                // ======================================================
+                const API_URL = 'https://your-python-backend.onrender.com/send-email';
+                // Если бэкенд запущен локально: 'http://127.0.0.1:5000/send-email'
+
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    // Show success
+                    showSuccess();
+                } else {
+                    throw new Error(result.message || 'Ошибка отправки');
+                }
+            } catch (error) {
+                console.error('❌ Ошибка:', error);
+                // Если бэкенд не отвечает — показываем success всё равно,
+                // чтобы не портить впечатление. Но информируем пользователя.
+                if (confirm(
+                        '💕 Не удалось отправить письмо, но я всё равно очень рад!\n\n' +
+                        'Нажми "OK", чтобы продолжить, или "Отмена", чтобы попробовать снова.'
+                    )) {
+                    showSuccess();
+                } else {
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerHTML = originalText;
+                }
+            } finally {
+                if (!successMessage.classList.contains('show')) {
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerHTML = originalText;
+                }
+            }
+        });
+
+        // ============================================================
+        // Show success with confetti
+        // ============================================================
+        function showSuccess() {
+            // Hide form
+            dateForm.classList.remove('show');
+            btnDate.textContent = '📅 Выбери дату! И напиши когда тебе будет угодно';
+
+            // Show success
+            successMessage.classList.add('show');
+
+            // Disable submit
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '✅ Отправлено!';
+
+            // Stop kiss rain
+            if (kissInterval) {
+                clearInterval(kissInterval);
+                kissInterval = null;
+            }
+
+            // Launch confetti hearts
+            launchConfetti();
+
+            // Also send a backup via mailto? No, we already sent via API.
+            // But we can show a nice message.
+        }
+
+        // ============================================================
+        // Kiss rain animation
+        // ============================================================
+        function startKissRain() {
+            if (kissInterval) return;
+            // Clear any existing kisses
+            kissContainer.innerHTML = '';
+            // Create new kisses every 400ms
+            kissInterval = setInterval(() => {
+                createKiss();
+            }, 380);
+            // Also create a few immediately
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => createKiss(), i * 120);
+            }
+        }
+
+        function createKiss() {
+            const kiss = document.createElement('span');
+            kiss.className = 'kiss-emoji';
+            const emojis = ['💋', '💕', '❤️', '✨', '💖', '🌸', '🌺'];
+            kiss.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            const size = 22 + Math.random() * 28;
+            kiss.style.fontSize = size + 'px';
+            kiss.style.left = (Math.random() * 92 + 2) + '%';
+            kiss.style.bottom = '-10px';
+            const duration = 4 + Math.random() * 3;
+            kiss.style.animationDuration = duration + 's';
+            const delay = Math.random() * 0.8;
+            kiss.style.animationDelay = delay + 's';
+            // random rotation
+            kiss.style.setProperty('--rot', (Math.random() * 30 - 15) + 'deg');
+            kissContainer.appendChild(kiss);
+
+            // Remove after animation ends
+            setTimeout(() => {
+                if (kiss.parentNode) kiss.remove();
+            }, (duration + delay) * 1000 + 200);
+        }
+
+        // ============================================================
+        // Confetti hearts (success)
+        // ============================================================
+        function launchConfetti() {
+            if (confettiInterval) {
+                clearInterval(confettiInterval);
+                confettiInterval = null;
+            }
+            confettiContainer.innerHTML = '';
+            const emojis = ['❤️', '💕', '💖', '✨', '🌸', '🌺', '💗', '💓'];
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const el = document.createElement('span');
+                    el.className = 'confetti-heart';
+                    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    const size = 18 + Math.random() * 26;
+                    el.style.fontSize = size + 'px';
+                    el.style.left = (Math.random() * 94 + 2) + '%';
+                    el.style.top = '-10px';
+                    const dur = 2.5 + Math.random() * 2;
+                    el.style.animationDuration = dur + 's';
+                    el.style.animationDelay = (Math.random() * 1.2) + 's';
+                    confettiContainer.appendChild(el);
+                    setTimeout(() => {
+                        if (el.parentNode) el.remove();
+                    }, (dur + 1.2) * 1000);
+                }, i * 80);
+            }
+            // Keep sending waves
+            confettiInterval = setInterval(() => {
+                if (!successMessage.classList.contains('show')) {
+                    clearInterval(confettiInterval);
+                    confettiInterval = null;
+                    return;
+                }
+                for (let i = 0; i < 6; i++) {
+                    setTimeout(() => {
+                        const el = document.createElement('span');
+                        el.className = 'confetti-heart';
+                        el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                        const size = 16 + Math.random() * 22;
+                        el.style.fontSize = size + 'px';
+                        el.style.left = (Math.random() * 94 + 2) + '%';
+                        el.style.top = '-10px';
+                        const dur = 2.5 + Math.random() * 2;
+                        el.style.animationDuration = dur + 's';
+                        el.style.animationDelay = (Math.random() * 0.6) + 's';
+                        confettiContainer.appendChild(el);
+                        setTimeout(() => {
+                            if (el.parentNode) el.remove();
+                        }, (dur + 0.8) * 1000);
+                    }, i * 100);
+                }
+            }, 3000);
+        }
+
+        // ============================================================
+        // Cleanup on page unload
+        // ============================================================
+        window.addEventListener('beforeunload', function() {
+            if (kissInterval) clearInterval(kissInterval);
+            if (confettiInterval) clearInterval(confettiInterval);
+        });
+
+        // ============================================================
+        // Auto-start kiss rain when page2 becomes visible
+        // ============================================================
+        // If page2 is already active (e.g. after reload), start kisses
+        if (page2.classList.contains('active')) {
+            startKissRain();
+        }
+
+        // ============================================================
+        // Enter key support for form
+        // ============================================================
+        commentField.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                btnSubmit.click();
+            }
+        });
+
+        // ============================================================
+        // Set min date for date picker (today)
+        // ============================================================
+        const today = new Date().toISOString().split('T')[0];
+        datePicker.setAttribute('min', today);
+
+        // ============================================================
+        // iOS Safari fix: ensure date picker works
+        // ============================================================
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            datePicker.setAttribute('type', 'date');
+        }
+
+        console.log('💕 Приглашение на свидание загружено! 💕');
+        console.log('🐱 Не забудь настроить бэкенд для отправки писем!');
+        console.log('📧 В файле app.py укажи свои SMTP-данные.');
+        console.log('🌐 Замени API_URL в JS на адрес своего бэкенда.');
+    </script>
+
+</body>
+</html>
