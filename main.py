@@ -48,4 +48,8 @@ async def save_data(request: DateRequest):
 
 # --- Запуск (если файл запущен напрямую) ---
 if __name__ == "__main__":
+<<<<<<< HEAD
     uvicorn.run("main:app", host="0.0.0.0", port=5000, reload=True)
+=======
+    uvicorn.run("main:app", host="0.0.0.0", port=5000, reload=True)
+>>>>>>> add90c36737c359850f44836462b4653d805072b
